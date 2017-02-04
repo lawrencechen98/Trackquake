@@ -15,11 +15,13 @@ class MapPin : NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var title: String?
     var subtitle: String?
+    var id: String?
     
-    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String) {
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, id: String) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
+        self.id = id;
     }
 }
 
@@ -38,11 +40,13 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
         case month
     }
     
+    var loaded:Bool = false
     var magnitude: Magnitude = .all
     var timeFrame: TimeFrame = .day
     var earthquakes: Int = 5
     var json: [String:AnyObject] = ["":"" as AnyObject]
     let regionRadius: CLLocationDistance = 50000
+    var pinArray: [MapPin] = []
     
     @IBOutlet var resetButton: UIBarButtonItem!
     @IBOutlet var indicator: UIActivityIndicatorView!
@@ -66,8 +70,11 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
             locationManager.startUpdatingLocation()
         }
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        loaded = false
         refresh()
-        
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
@@ -107,6 +114,12 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
+    func centerMapOnLocation(location: CLLocation, radius: CLLocationDistance) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+                                                                  regionRadius * 2.0, regionRadius * 2.0)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.earthquakes
     }
@@ -118,6 +131,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
             
             let earthquake = features[indexPath.row] as! [String:AnyObject]
             let properties = earthquake["properties"] as! [String:AnyObject]
+            let geometry = earthquake["geometry"] as! [String:AnyObject]
+            let coordinates = geometry["coordinates"] as! [Double]
+            let idString = earthquake["id"] as! String
             let place = properties["place"] as! String
             let index = place.characters.index(of:",")
             var city: String
@@ -152,6 +168,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
             cell.mainLabel.text = city
             cell.timeLabel.text = "\(dateFormatter.string(from: date as Date))"
             cell.locationLabel.text = description
+            cell.coordinates = coordinates
+            cell.idString = idString;
         }
 
         return cell
@@ -220,12 +238,19 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
                         let coordinates = geometry["coordinates"] as! [Double]
                         let longitude = coordinates[0]
                         let latitude = coordinates[1]
+                        let idString = earthquake["id"] as! String
+                        let properties = earthquake["properties"] as! [String:AnyObject]
+                        let place = properties["place"] as! String
+                        var mag = properties["mag"] as! Double
+                        mag = Double(round(10*mag)/10)
+                        
                         
                         let point = MapPin(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
-                                           title: "Earthquake",
-                                           subtitle: "Magnitude: ")
+                                           title: place,
+                                           subtitle: "Magnitude: \(mag)", id: idString)
                         
                         self.mapView.addAnnotation(point)
+                        self.pinArray.append(point)
                     }
                 }
                 
@@ -240,12 +265,39 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
                     self.indicator.stopAnimating()
                     self.resetButton.tintColor = UIColor(red: 0.73, green: 0.49, blue: 1.0, alpha: 1.0)
                     self.resetButton.isEnabled = true
-
+                    self.loaded = true
+                    print("loaded")
                 })
             }
             
         }
         task.resume()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        //not finished yet
+        if (!loaded){
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
+        let selectedCell:EarthquakeCell = tableView.cellForRow(at: indexPath as IndexPath)! as! EarthquakeCell
+        var coordinates = selectedCell.coordinates;
+        print(coordinates);
+        let location = CLLocation(latitude: coordinates[1], longitude: coordinates[0])
+        //resolution
+        self.centerMapOnLocation(location: location, radius: 1000000)
+        let idString = selectedCell.idString
+        var selectedAnnotation = MapPin(coordinate: location.coordinate, title: "temp", subtitle: "temp", id: idString)
+
+        for annotation in pinArray as [MapPin]{
+            if(annotation.id == idString){
+                selectedAnnotation = annotation
+                print(selectedAnnotation);
+                mapView.selectAnnotation(selectedAnnotation, animated: true)
+                break
+            }
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -264,6 +316,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
         }
     }
 
+    
 
 }
 
