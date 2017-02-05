@@ -14,6 +14,7 @@ class EarthquakeCell: UITableViewCell {
     @IBOutlet var locationLabel: UILabel!
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var magLabel: UILabel!
+    var magnitude:Double = 0.0;
     var coordinates: [Double] = [0, 0];
     var idString: String = "";
     

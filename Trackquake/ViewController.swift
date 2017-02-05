@@ -45,7 +45,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
     var timeFrame: TimeFrame = .day
     var earthquakes: Int = 5
     var json: [String:AnyObject] = ["":"" as AnyObject]
-    let regionRadius: CLLocationDistance = 50000
+    let regionRadius: CLLocationDistance = 120000
     var pinArray: [MapPin] = []
     
     @IBOutlet var resetButton: UIBarButtonItem!
@@ -86,27 +86,29 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
         
         self.mapView.setRegion(region, animated: true)
     }
-
-
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let circleRenderer = MKCircleRenderer(overlay: overlay)
+        circleRenderer.fillColor = UIColor.purple.withAlphaComponent(0.1)
+        circleRenderer.strokeColor = UIColor.purple
+        circleRenderer.lineWidth = 0.3
+        return circleRenderer
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let annotation = annotation as? MapPin {
-            let identifier = "pin"
-            var view: MKPinAnnotationView
-            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-                as? MKPinAnnotationView {
-                dequeuedView.annotation = annotation
-                view = dequeuedView
-            } else {
-                
-                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        if let annotation = annotation as? MapPin{
+            if let view = mapView.dequeueReusableAnnotationView(withIdentifier: "pin"){
+                return view
+            }else{
+                let view = MKAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+                view.isEnabled = true
                 view.canShowCallout = true
-                view.calloutOffset = CGPoint(x: -5, y: 5)
-                view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIView
+                //view.leftCalloutAccessoryView = UIImageView(image: UIImage(named: "radius"))
+                return view
             }
-            return view
         }
         return nil
     }
+    
     
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
@@ -116,7 +118,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
     
     func centerMapOnLocation(location: CLLocation, radius: CLLocationDistance) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-                                                                  regionRadius * 2.0, regionRadius * 2.0)
+                                                                  radius * 2.0, radius * 2.0)
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
@@ -150,6 +152,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
             
             if let mag = properties["mag"] as? Double{
                 cell.magLabel.text = String(format: "%.1f", mag)
+                cell.magnitude = mag;
                 let level = 1.0 - (mag - 2.5)/10.0
                 if(mag >= 2.5){
                     cell.magLabel.textColor = UIColor(red: 1.0, green: CGFloat(level), blue: 0.6, alpha: 1.0)
@@ -181,6 +184,11 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
  
     func refresh() -> Void{
         indicator.startAnimating()
+        self.pinArray = []
+        let allAnnotations = self.mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
+        let allOverlays = self.mapView.overlays
+        self.mapView.removeOverlays(allOverlays)
         self.resetButton.tintColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
         self.resetButton.isEnabled = false
         var magstring:String?
@@ -249,6 +257,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
                                            title: place,
                                            subtitle: "Magnitude: \(mag)", id: idString)
                         
+                        let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                        let circle = MKCircle(center: center, radius: mag * mag * 10000)
+                        self.mapView.add(circle)
                         self.mapView.addAnnotation(point)
                         self.pinArray.append(point)
                     }
@@ -281,11 +292,12 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
             return
         }
         let selectedCell:EarthquakeCell = tableView.cellForRow(at: indexPath as IndexPath)! as! EarthquakeCell
-        var coordinates = selectedCell.coordinates;
-        print(coordinates);
+        var coordinates = selectedCell.coordinates
+        let magnitude:Double = selectedCell.magnitude
+        print(coordinates)
         let location = CLLocation(latitude: coordinates[1], longitude: coordinates[0])
         //resolution
-        self.centerMapOnLocation(location: location, radius: 1000000)
+        self.centerMapOnLocation(location: location, radius: 10000 * magnitude * magnitude)
         let idString = selectedCell.idString
         var selectedAnnotation = MapPin(coordinate: location.coordinate, title: "temp", subtitle: "temp", id: idString)
 
