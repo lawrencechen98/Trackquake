@@ -48,7 +48,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
     let regionRadius: CLLocationDistance = 120000
     var pinArray: [MapPin] = []
     
-    @IBOutlet var resetButton: UIBarButtonItem!
+ 
+    @IBOutlet var resetButton: UIButton!
     @IBOutlet var indicator: UIActivityIndicatorView!
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var tableView: UITableView!
@@ -178,10 +179,10 @@ class ViewController: UIViewController, MKMapViewDelegate, UITableViewDataSource
         return cell
     }
     
-    @IBAction func refreshButton(_ sender: Any) {
+ 
+    @IBAction func refresh(_ sender: Any) {
         refresh()
     }
- 
     func refresh() -> Void{
         indicator.startAnimating()
         self.pinArray = []

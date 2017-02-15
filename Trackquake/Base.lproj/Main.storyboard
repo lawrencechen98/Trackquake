@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -22,20 +22,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mV8-Qt-tii">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </mapView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ckc-8C-HAG">
                                 <rect key="frame" x="0.0" y="524" width="375" height="143"/>
-                                <color key="backgroundColor" red="0.56856346130371094" green="0.56866437196731567" blue="0.56855708360671997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.56856346130371094" green="0.56866437196731567" blue="0.56855708360671997" alpha="0.27201947773972601" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="143" id="XwQ-bL-BIp"/>
+                                    <constraint firstAttribute="height" constant="143" id="Cag-Tr-5tC"/>
                                 </constraints>
                                 <color key="separatorColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="sectionIndexBackgroundColor" red="0.56856346130371094" green="0.56866437196731567" blue="0.56855708360671997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="earthquake" rowHeight="60" id="cRs-Vd-Rti" customClass="EarthquakeCell" customModule="Trackquake" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cRs-Vd-Rti" id="v0h-As-4tQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="..." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="K9X-g6-cv3">
@@ -79,7 +81,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="kd4-Md-7WK" secondAttribute="bottom" constant="-5" id="q5K-9b-Xib"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="0.20641588184931506" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="locationLabel" destination="kd4-Md-7WK" id="PQt-3O-fZH"/>
                                             <outlet property="magLabel" destination="DLD-o0-z8G" id="ZsC-dv-Igc"/>
@@ -93,59 +95,51 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="lPn-Go-eiw"/>
                                 </connections>
                             </tableView>
-                            <navigationBar contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEg-P9-l2A">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <color key="tintColor" red="0.72872348819999999" green="0.48656139500000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="barTintColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="35"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Trackquake" id="a14-OC-wF9">
-                                        <barButtonItem key="leftBarButtonItem" image="Refresh" id="1F9-do-yP6">
-                                            <color key="tintColor" red="0.72872348819999999" green="0.48656139500000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <connections>
-                                                <action selector="refreshButton:" destination="BYZ-38-t0r" id="DwE-he-80G"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" image="Settings" id="xpB-pR-Auj">
-                                            <color key="tintColor" red="0.72872348819999999" green="0.48656139500000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <connections>
-                                                <segue destination="o5b-Rf-0TT" kind="presentation" identifier="settingButton" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="drl-Ck-buc"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mV8-Qt-tii">
-                                <rect key="frame" x="0.0" y="64" width="375" height="460"/>
-                            </mapView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="BQF-hm-ni1">
-                                <rect key="frame" x="8" y="24" width="37" height="37"/>
+                                <rect key="frame" x="16" y="28" width="37" height="37"/>
                                 <color key="color" red="0.72872348819999999" green="0.48656139500000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SlR-ca-qA0">
+                                <rect key="frame" x="16" y="34" width="33" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="33" id="Tbc-f7-Iv6"/>
+                                </constraints>
+                                <state key="normal" image="Refresh"/>
+                                <connections>
+                                    <action selector="refresh:" destination="BYZ-38-t0r" eventType="touchUpInside" id="d2B-UT-k0a"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lWC-yK-0mJ">
+                                <rect key="frame" x="337" y="35" width="22" height="22"/>
+                                <color key="tintColor" red="0.50196081400000003" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="Settings"/>
+                                <connections>
+                                    <segue destination="o5b-Rf-0TT" kind="presentation" identifier="settingButton" id="NZj-xU-Xlg"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="ckc-8C-HAG" firstAttribute="top" secondItem="mV8-Qt-tii" secondAttribute="bottom" id="3df-3F-wuI"/>
-                            <constraint firstItem="iEg-P9-l2A" firstAttribute="centerY" secondItem="BQF-hm-ni1" secondAttribute="centerY" id="AHy-Fs-Fca"/>
-                            <constraint firstItem="iEg-P9-l2A" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="LjJ-9p-M8q"/>
-                            <constraint firstItem="BQF-hm-ni1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-8" id="QDb-Em-GFu"/>
-                            <constraint firstAttribute="trailing" secondItem="iEg-P9-l2A" secondAttribute="trailing" id="SCQ-Mi-iEg"/>
-                            <constraint firstItem="ckc-8C-HAG" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="bVE-c9-vb7"/>
-                            <constraint firstItem="iEg-P9-l2A" firstAttribute="trailing" secondItem="mV8-Qt-tii" secondAttribute="trailing" id="buT-Zb-ghQ"/>
-                            <constraint firstItem="mV8-Qt-tii" firstAttribute="leading" secondItem="ckc-8C-HAG" secondAttribute="leading" id="hFU-bm-kqJ"/>
-                            <constraint firstItem="iEg-P9-l2A" firstAttribute="leading" secondItem="mV8-Qt-tii" secondAttribute="leading" id="hTD-yY-FV9"/>
-                            <constraint firstItem="iEg-P9-l2A" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="nJc-qh-oKw"/>
-                            <constraint firstItem="mV8-Qt-tii" firstAttribute="top" secondItem="iEg-P9-l2A" secondAttribute="bottom" id="rNU-J0-uFV"/>
-                            <constraint firstItem="mV8-Qt-tii" firstAttribute="trailing" secondItem="ckc-8C-HAG" secondAttribute="trailing" id="tQq-EU-ZZS"/>
+                            <constraint firstItem="mV8-Qt-tii" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="0KS-gh-m4q"/>
+                            <constraint firstItem="ckc-8C-HAG" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="0d3-YC-6CG"/>
+                            <constraint firstItem="BQF-hm-ni1" firstAttribute="leading" secondItem="SlR-ca-qA0" secondAttribute="leading" id="88U-4S-ees"/>
+                            <constraint firstItem="mV8-Qt-tii" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="E4b-dt-ZeV"/>
+                            <constraint firstItem="BQF-hm-ni1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="H75-Br-gdW"/>
+                            <constraint firstItem="SlR-ca-qA0" firstAttribute="centerY" secondItem="BQF-hm-ni1" secondAttribute="centerY" id="RDa-Qr-kvX"/>
+                            <constraint firstAttribute="trailing" secondItem="mV8-Qt-tii" secondAttribute="trailing" id="URo-ww-Ggb"/>
+                            <constraint firstItem="SlR-ca-qA0" firstAttribute="centerY" secondItem="lWC-yK-0mJ" secondAttribute="centerY" id="Xeb-7Z-yRV"/>
+                            <constraint firstItem="lWC-yK-0mJ" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="biP-gw-OQM"/>
+                            <constraint firstItem="SlR-ca-qA0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="14" id="cc5-tJ-hc0"/>
+                            <constraint firstItem="mV8-Qt-tii" firstAttribute="trailing" secondItem="ckc-8C-HAG" secondAttribute="trailing" id="ddi-9W-HSL"/>
+                            <constraint firstItem="mV8-Qt-tii" firstAttribute="leading" secondItem="ckc-8C-HAG" secondAttribute="leading" id="gaz-V1-GQG"/>
+                            <constraint firstItem="BQF-hm-ni1" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="hky-h7-NPY"/>
+                            <constraint firstItem="mV8-Qt-tii" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="pYj-pH-wju"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="indicator" destination="BQF-hm-ni1" id="bzs-Qd-bAF"/>
                         <outlet property="mapView" destination="mV8-Qt-tii" id="uJr-79-yAu"/>
-                        <outlet property="resetButton" destination="1F9-do-yP6" id="Pd2-IX-Rwf"/>
+                        <outlet property="resetButton" destination="SlR-ca-qA0" id="MRt-HW-MpV"/>
                         <outlet property="tableView" destination="ckc-8C-HAG" id="ahz-01-cDa"/>
                     </connections>
                 </viewController>
